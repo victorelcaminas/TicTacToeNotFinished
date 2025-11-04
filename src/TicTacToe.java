@@ -2,44 +2,55 @@ import java.util.Scanner;
 
 public class TicTacToe {
     public static void main(String[] args) {
+        Board board = new Board();
         boolean gameOver = false;
         Scanner input = new Scanner(System.in);
-        Player player1 = getPlayerFromKeyboard(input, 1);
-        Player player2 = getPlayerFromKeyboard(input, 2);
-        Player currentPlayer = player1;
-        Board board = new Board();
-        System.out.println(board);
-
+        Player player1, player2, currentPlayer;
+        player1 = readPlayerFromKeyboard(input, 1);
+        player2 = readPlayerFromKeyboard(input, 2);
+        currentPlayer = player1;
         while (!gameOver) {
-            System.out.println("[" + currentPlayer.getSymbol() + "] " + currentPlayer.getName());
-            int row = readRowFromKeyboard(input);
-            int col = readColFromKeyboard(input);
-            board.shoot(row, col, currentPlayer);
+            System.out.println(board);
+            System.out.println(currentPlayer);
+            currentPlayer.shoot(input, board);
+            System.out.println(board);
+            if (board.wins(currentPlayer.getSymbol())) {
+                gameOver = true;
+                System.out.println("You win: " + currentPlayer);
+            } else {
+                if (board.draws()) {
+                    System.out.println("It is a draw");
+                    gameOver = true;
+                }
+            }
             if (currentPlayer == player1) {
                 currentPlayer = player2;
             } else {
                 currentPlayer = player1;
             }
         }
+
     }
 
-    public static Player getPlayerFromKeyboard(Scanner input, int turn) {
-        String symbol, name, aiAnswer;
-        boolean ai;
+    private static Player readPlayerFromKeyboard(Scanner input, int turn) {
+        Player player;
+        System.out.println("Enter name: ");
+        String name = input.next();
+        String symbol;
         if (turn == 1) {
-            symbol = "X";
+            symbol = Player.PLAYER1_SYMBOL;
         } else {
-            symbol = "O";
+            symbol = Player.PLAYER2_SYMBOL;
         }
-        System.out.println("Enter your name:");
-        name = input.next();
         System.out.println("Are you an AI? (Y/N)");
-        aiAnswer = input.next().toUpperCase();
-        if (aiAnswer.equals("Y")) {
-            ai = true;
+        String answer = input.next();
+        if (answer.toUpperCase().equals("Y")) {
+            player = new PlayerAI(name, symbol);
         } else {
-            ai = false;
+            player = new Player(name, symbol);
         }
-        return new Player(name, ai, symbol);
+        return player;
     }
+
+
 }
