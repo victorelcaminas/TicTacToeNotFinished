@@ -13,12 +13,13 @@ public class TicTacToe {
             System.out.println(board);
             System.out.println(currentPlayer);
             currentPlayer.shoot(input, board);
-            System.out.println(board);
             if (board.wins(currentPlayer.getSymbol())) {
+                System.out.println(board);
                 gameOver = true;
                 System.out.println("You win: " + currentPlayer);
             } else {
                 if (board.draws()) {
+                    System.out.println(board);
                     System.out.println("It is a draw");
                     gameOver = true;
                 }
