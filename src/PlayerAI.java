@@ -9,16 +9,16 @@ public class PlayerAI extends Player {
 
     public void shoot(Scanner input, Board board) {
         // First rule. If AI can win, then win
-        if (firstRule1(board)) return;
+        if (applyRule1(board)) return;
         // Second rule. If AI can't win, then block other player.
-        if (checkRule2(board)) return;
+        if (applyRule2(board)) return;
         // 3rd rule. Center position
-        if (checkRule3(board)) return;
+        if (applyRule3(board)) return;
         // 4th rule. Random position
         randomShoot(board);
     }
 
-    private boolean checkRule3(Board board) {
+    private boolean applyRule3(Board board) {
         // 3rd rule. Center position
         if (board.shoot(2, 2, getSymbol())) {
             return true;
@@ -26,7 +26,7 @@ public class PlayerAI extends Player {
         return false;
     }
 
-    private boolean checkRule2(Board board) {
+    private boolean applyRule2(Board board) {
         // Second rule. If AI can't win, then block other player.
         String otherPlayerSymbol;
         if (getSymbol().equals(Player.PLAYER1_SYMBOL)) {
@@ -50,7 +50,7 @@ public class PlayerAI extends Player {
         return false;
     }
 
-    private boolean firstRule1(Board board) {
+    private boolean applyRule1(Board board) {
         // First rule. If AI can win, then win
         for (int row = 1; row <= Board.NUM_ROWS_COLS; row++) {
             for (int col = 1; col <= Board.NUM_ROWS_COLS; col++) {
